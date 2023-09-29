@@ -1,0 +1,118 @@
+{
+	"info": {
+		"_postman_id": "28cd9f9b-2c6f-444f-b00a-99c432c3ced7",
+		"name": "person-service",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18836202"
+	},
+	"item": [
+		{
+			"name": "create",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"firstName\": \"Алексей\",\n    \"lastName\": \"Сидоров\",\n    \"age\": 18\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9902/api/v1/person/create",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9902",
+					"path": [
+						"api",
+						"v1",
+						"person",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": \"a5422f0c-ad2c-4718-b8a6-c4f96fa321dc\",\n    \"firstName\": \"Петр\",\n    \"lastName\": \"Иванов\",\n    \"age\": 22\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9902/api/v1/person/update",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9902",
+					"path": [
+						"api",
+						"v1",
+						"person",
+						"update"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9902/api/v1/person/delete/f7090805-bbbe-4a53-9baa-2f637f8295fa",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9902",
+					"path": [
+						"api",
+						"v1",
+						"person",
+						"delete",
+						"f7090805-bbbe-4a53-9baa-2f637f8295fa"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get-person",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9902/api/v1/person/get/9373dbf3-da4b-47e5-ab72-6d3fcbcccdb3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9902",
+					"path": [
+						"api",
+						"v1",
+						"person",
+						"get",
+						"9373dbf3-da4b-47e5-ab72-6d3fcbcccdb3"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
