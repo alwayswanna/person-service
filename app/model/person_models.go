@@ -6,6 +6,8 @@ import (
 	"time"
 )
 
+// PersonRequest model info
+// @Description Model for create or update person entity.
 type PersonRequest struct {
 	Id        uuid.UUID `json:"id,omitempty"`
 	FirstName string    `json:"firstName"`
@@ -14,6 +16,8 @@ type PersonRequest struct {
 	Timestamp time.Time `json:"timestamp,omitempty"`
 }
 
+// PersonResponse model info
+// @Description Model for response on API operations.
 type PersonResponse struct {
 	Id        uuid.UUID `json:"id"`
 	FirstName string    `json:"firstName"`
@@ -22,6 +26,8 @@ type PersonResponse struct {
 	Timestamp time.Time `json:"timestamp"`
 }
 
+// PersonDeleteResponse model info
+// @Description Model for response on delete operation.
 type PersonDeleteResponse struct {
 	Message string `json:"message"`
 }

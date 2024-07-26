@@ -41,6 +41,14 @@ func init() {
 	controllers.RegisterPersonHandlers(logger, router, storage)
 }
 
+// @title           person-service API
+// @version         1.0
+// @description     This is a sample server on go-lang.
+// @contact.name    API Support
+// @contact.email   support@swagger.io
+// @host      		localhost:9902
+// @BasePath  		/api/v1
+// @externalDocs.description  API for create/update/delete/edit persons.
 func main() {
 	logger.Info("Starting person-service ... ", slog.String("env", configuration.Env))
 

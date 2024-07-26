@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"fmt"
-	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/render"
 	"github.com/google/uuid"
@@ -21,6 +20,15 @@ type PersonRepositoryImpl interface {
 	FindPerson(id *uuid.UUID) (entity.Person, error)
 }
 
+// CreatePerson godoc
+// @Summary      Create new person entity
+// @Description  Create new person entity
+// @Tags         persons
+// @Accept       json
+// @Produce      json
+// @Param  		 request	body    	model.PersonRequest  	true  "Model for create new person entity."
+// @Success      200  		{array}   	model.PersonResponse
+// @Router       /person/create [post]
 func CreatePerson(logger *slog.Logger, impl PersonRepositoryImpl) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		const op = "handlers.createPerson"
@@ -59,6 +67,15 @@ func CreatePerson(logger *slog.Logger, impl PersonRepositoryImpl) http.HandlerFu
 	}
 }
 
+// DeletePerson godoc
+// @Summary      Delete existing persons
+// @Description  Delete existing persons
+// @Tags         persons
+// @Accept       json
+// @Produce      json
+// @Param  		 id    		query    	string  					true  	"ID for remove person entity"
+// @Success      200  		{array} 	model.PersonDeleteResponse
+// @Router       /person/delete [delete]
 func DeletePerson(logger *slog.Logger, impl PersonRepositoryImpl) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		const op = "handlers.deletePerson"
@@ -69,7 +86,7 @@ func DeletePerson(logger *slog.Logger, impl PersonRepositoryImpl) http.HandlerFu
 		)
 
 		var deleteId string
-		deleteId = chi.URLParam(r, "id")
+		deleteId = r.URL.Query().Get("id")
 		logger.Info("Request body decoded", slog.Any("entity_id", deleteId))
 
 		id, err := impl.DeletePerson(uuid.MustParse(deleteId))
@@ -87,6 +104,15 @@ func DeletePerson(logger *slog.Logger, impl PersonRepositoryImpl) http.HandlerFu
 	}
 }
 
+// UpdatePerson godoc
+// @Summary      Update existing persons
+// @Description  Update existing persons
+// @Tags         persons
+// @Accept       json
+// @Produce      json
+// @Param  		 request    body    	model.PersonRequest  	true  	"Model for update person entity"
+// @Success      200  		{array}   	model.PersonResponse
+// @Router       /person/update [put]
 func UpdatePerson(logger *slog.Logger, impl PersonRepositoryImpl) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		const op = "handlers.updatePerson"
@@ -125,6 +151,15 @@ func UpdatePerson(logger *slog.Logger, impl PersonRepositoryImpl) http.HandlerFu
 	}
 }
 
+// FindPerson godoc
+// @Summary      Find existing persons
+// @Description  Find existing persons
+// @Tags         persons
+// @Accept       json
+// @Produce      json
+// @Param		 id    query    string  				true  	"ID of person entity."
+// @Success      200  {array}   model.PersonResponse
+// @Router       /person/get [get]
 func FindPerson(logger *slog.Logger, impl PersonRepositoryImpl) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		const op = "handlers.findPerson"
@@ -135,7 +170,7 @@ func FindPerson(logger *slog.Logger, impl PersonRepositoryImpl) http.HandlerFunc
 		)
 
 		var personId string
-		personId = chi.URLParam(r, "id")
+		personId = r.URL.Query().Get("id")
 		logger.Info("Request body decoded", slog.Any("entity_id", personId))
 
 		parsedUuid := uuid.MustParse(personId)
