@@ -1,0 +1,142 @@
+basePath: /api/v1
+definitions:
+  model.PersonDeleteResponse:
+    description: Model for response on delete operation.
+    properties:
+      message:
+        type: string
+    type: object
+  model.PersonRequest:
+    description: Model for create or update person entity.
+    properties:
+      age:
+        type: integer
+      firstName:
+        type: string
+      id:
+        type: string
+      lastName:
+        type: string
+      timestamp:
+        type: string
+    type: object
+  model.PersonResponse:
+    description: Model for response on API operations.
+    properties:
+      age:
+        type: integer
+      firstName:
+        type: string
+      id:
+        type: string
+      lastName:
+        type: string
+      timestamp:
+        type: string
+    type: object
+externalDocs:
+  description: API for create/update/delete/edit persons.
+host: localhost:9902
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+  description: This is a sample server on go-lang.
+  title: person-service API
+  version: "1.0"
+paths:
+  /person/create:
+    post:
+      consumes:
+      - application/json
+      description: Create new person entity
+      parameters:
+      - description: Model for create new person entity.
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.PersonRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.PersonResponse'
+            type: array
+      summary: Create new person entity
+      tags:
+      - persons
+  /person/delete:
+    delete:
+      consumes:
+      - application/json
+      description: Delete existing persons
+      parameters:
+      - description: ID for remove person entity
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.PersonDeleteResponse'
+            type: array
+      summary: Delete existing persons
+      tags:
+      - persons
+  /person/get:
+    get:
+      consumes:
+      - application/json
+      description: Find existing persons
+      parameters:
+      - description: ID of person entity.
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.PersonResponse'
+            type: array
+      summary: Find existing persons
+      tags:
+      - persons
+  /person/update:
+    put:
+      consumes:
+      - application/json
+      description: Update existing persons
+      parameters:
+      - description: Model for update person entity
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.PersonRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.PersonResponse'
+            type: array
+      summary: Update existing persons
+      tags:
+      - persons
+swagger: "2.0"

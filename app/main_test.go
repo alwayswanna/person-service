@@ -95,7 +95,7 @@ func Test_PersonService(t *testing.T) {
 
 		result := parseResponse(err, resp, t)
 
-		resp, err = http.Get(fmt.Sprintf("http://localhost:9902/api/v1/person/get/%s", result.Id.String()))
+		resp, err = http.Get(fmt.Sprintf("http://localhost:9902/api/v1/person/get?id=%s", result.Id.String()))
 
 		result = parseResponse(err, resp, t)
 
@@ -120,7 +120,7 @@ func Test_PersonService(t *testing.T) {
 		parsedResponse := parseResponse(err, resp, t)
 		req, err := http.NewRequest(
 			http.MethodDelete,
-			fmt.Sprintf("http://localhost:9902/api/v1/person/delete/%s", parsedResponse.Id.String()),
+			fmt.Sprintf("http://localhost:9902/api/v1/person/delete?id=%s", parsedResponse.Id.String()),
 			nil,
 		)
 
