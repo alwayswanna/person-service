@@ -5,9 +5,11 @@ import (
 	"fmt"
 	"github.com/google/uuid"
 	_ "github.com/lib/pq"
+	"log"
 	"person-service/config"
 	"person-service/db/entity"
 	"person-service/utils"
+	"strconv"
 	"time"
 )
 
@@ -68,15 +70,32 @@ func (s *PersonRepositoryImpl) DeletePerson(id uuid.UUID) (string, error) {
 	return id.String(), nil
 }
 
-// FindPerson find person by id.
-func (s *PersonRepositoryImpl) FindPerson(id *uuid.UUID) (entity.Person, error) {
-	const op = "storage.postgres.FindPerson"
+// FindPersonById find person by id.
+func (s *PersonRepositoryImpl) FindPersonById(id *uuid.UUID) (entity.Person, error) {
+	const op = "storage.postgres.FindPersonById"
 
 	var person entity.Person
 
 	sqlStatement := `SELECT * FROM person p WHERE p.id = $1`
 	err := s.db.QueryRow(sqlStatement, id.String()).
-		Scan(&person.Id, &person.FirstName, &person.LastName, &person.Age, &person.Timestamp)
+		Scan(&person.Id, &person.FirstName, &person.LastName, &person.Age, &person.Timestamp, &person.Login)
+
+	if err != nil {
+		return entity.Person{}, fmt.Errorf("error while find person: %s: %w", op, err)
+	} else {
+		return person, nil
+	}
+}
+
+// FindPersonByLogin find person by login.
+func (s *PersonRepositoryImpl) FindPersonByLogin(login string) (entity.Person, error) {
+	const op = "storage.postgres.FindPersonByLogin"
+
+	var person entity.Person
+
+	sqlStatement := `SELECT * FROM person p WHERE p.login = $1`
+	err := s.db.QueryRow(sqlStatement, login).
+		Scan(&person.Id, &person.FirstName, &person.LastName, &person.Age, &person.Timestamp, &person.Login)
 
 	if err != nil {
 		return entity.Person{}, fmt.Errorf("error while find person: %s: %w", op, err)
@@ -134,4 +153,54 @@ func (s *PersonRepositoryImpl) SavePerson(p entity.Person) (entity.Person, error
 	} else {
 		return person, nil
 	}
+}
+
+// LoadPersons load first 50 persons from database.
+func (s *PersonRepositoryImpl) LoadPersons(page *string) ([]entity.Person, error) {
+	const op = "storage.postgres.LoadPersons"
+
+	var person entity.Person
+	pageInt, _ := strconv.Atoi(*page)
+	sqlStatement := `SELECT p.id, p.first_name, p.last_name, p.age, p.last_update, p.login FROM person p LIMIT 50 OFFSET $1`
+
+	var offset int
+	if pageInt <= 1 {
+		offset = 0
+	} else {
+		offset = (pageInt - 1) * 50
+	}
+
+	rows, err := s.db.Query(sqlStatement, offset)
+	if err != nil {
+		return nil, fmt.Errorf("error whole load persons: %s: %w", op, err)
+	}
+
+	defer func(rows *sql.Rows) {
+		err := rows.Close()
+		if err != nil {
+			log.Fatal(err)
+		}
+	}(rows)
+
+	var persons []entity.Person
+	for rows.Next() {
+		err := rows.Scan(&person.Id, &person.FirstName, &person.LastName, &person.Age, &person.Timestamp, &person.Login)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		persons = append(persons, entity.Person{
+			Id:        person.Id,
+			FirstName: person.FirstName,
+			LastName:  person.LastName,
+			Age:       person.Age,
+			Timestamp: person.Timestamp,
+			Login:     person.Login,
+		})
+	}
+	if err := rows.Err(); err != nil {
+		log.Fatal(err)
+	}
+
+	return persons, nil
 }

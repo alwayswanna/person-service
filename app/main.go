@@ -34,10 +34,24 @@ func init() {
 		os.Exit(1)
 	}
 	storage = db
+
 	/* init router */
 	router = chi.NewRouter()
+	controllers.RegisterCorsMiddlewareHandlers(router)
 
-	controllers.RegisterMiddlewareHandlers(logger, router)
+	/* init security | mock security for integration testing */
+	if configuration.Security.Module != "" {
+		rsaPubKey, rsaErr := utils.ConstructRsaPublicKey(configuration.Security.Module, configuration.Security.Exponent)
+		if rsaErr != nil {
+			logger.Error("Failed to create rsa.PublicKey", utils.Err(rsaErr))
+			os.Exit(1)
+		}
+		controllers.RegisterMiddlewareHandlers(logger, router, rsaPubKey)
+	} else {
+		controllers.RegisterMiddlewareHandlers(logger, router, nil)
+	}
+
+	/* register api handlers */
 	controllers.RegisterPersonHandlers(logger, router, storage)
 }
 

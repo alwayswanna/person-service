@@ -11,3 +11,12 @@ server:
   port: 9902
   timeout: 4s
   idle-timeout: 60s
+
+cors:
+  allowed-origins:
+    - http://localhost:9093
+  max-age: 3600
+
+security:
+  exponent: AQAB
+  module: uhxcYozUcKoBOAhb7h0GgxCMYXzyf-k-5DcV7K0tH7AQpu6ZVu1hSj66aeYqunX6lCbGh1pnYimZZwkl3jZyXBm4Y9EgOnlcMe3ySzkGAimrST6RnoWMMd3JzLlDskrPT3lD-_JGBBI2EWkNdoMoXJAAuJye4XlDl4PxV3-kdRBvk_uAYcxl_5v-qfQNrnUgT2PGziUmuy2YzUw_f7TvsU43MqjuZ1SEnzPq_fqB1yMGoYVYsvq6OYqN3SY_R2rTAv-rH89nOp0I1gs8qDyi_37o_9mVrmWFe7QGFxCju0g9c8EPMroDOIMiVJ3gurswvdR4gm9RXPQZfrh2GGV4_Q

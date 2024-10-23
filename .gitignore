@@ -1,1 +1,5 @@
 /.idea/
+# npm
+app-vue/.vscode
+app-vue/node_modules
+/node_modules/

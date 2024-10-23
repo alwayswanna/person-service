@@ -6,7 +6,9 @@ type ErrorResponse struct {
 }
 
 const (
-	InternalError = "InternalError"
+	InternalError     = "500"
+	NotFoundError     = "404"
+	UnAuthorizedError = "401"
 )
 
 func Error(msg string, status string) ErrorResponse {

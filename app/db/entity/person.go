@@ -7,6 +7,7 @@ import (
 
 type Person struct {
 	Id        *uuid.UUID
+	Login     string
 	FirstName string
 	LastName  string
 	Age       int

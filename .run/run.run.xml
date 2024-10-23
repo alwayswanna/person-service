@@ -1,16 +1,14 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="test" type="GoTestRunConfiguration" factoryName="Go Test">
+  <configuration default="false" name="run" type="GoApplicationRunConfiguration" factoryName="Go Application">
     <module name="person-service" />
     <working_directory value="$PROJECT_DIR$/app" />
     <envs>
-      <env name="CONFIG_PATH" value="configuration/application-test.yaml" />
+      <env name="CONFIG_PATH" value="configuration/application.yaml" />
     </envs>
     <kind value="PACKAGE" />
     <package value="person-service" />
     <directory value="$PROJECT_DIR$" />
-    <filePath value="$PROJECT_DIR$" />
-    <framework value="gotest" />
-    <pattern value="^\QTest_PersonService\E$" />
+    <filePath value="$PROJECT_DIR$/app/main.go" />
     <method v="2" />
   </configuration>
 </component>
