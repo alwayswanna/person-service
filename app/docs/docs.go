@@ -90,9 +90,9 @@ const docTemplate = `{
                 }
             }
         },
-        "/person/get": {
+        "/person/get/id": {
             "get": {
-                "description": "Find existing persons",
+                "description": "Find existing persons by id",
                 "consumes": [
                     "application/json"
                 ],
@@ -102,12 +102,47 @@ const docTemplate = `{
                 "tags": [
                     "persons"
                 ],
-                "summary": "Find existing persons",
+                "summary": "Find existing persons by id",
                 "parameters": [
                     {
                         "type": "string",
                         "description": "ID of person entity.",
                         "name": "id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.PersonResponse"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+		"/person/get/login": {
+            "get": {
+                "description": "Find existing persons by login",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "persons"
+                ],
+                "summary": "Find existing persons by login",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Login of person entity.",
+                        "name": "login",
                         "in": "query",
                         "required": true
                     }
@@ -147,6 +182,41 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/model.PersonRequest"
                         }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.PersonResponse"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/persons": {
+            "get": {
+                "description": "Load persons",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "persons"
+                ],
+                "summary": "Load first 50 persons",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Page of person table, when load by 50 rows.",
+                        "name": "page",
+                        "in": "query",
+                        "required": true
                     }
                 ],
                 "responses": {

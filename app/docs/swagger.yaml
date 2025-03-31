@@ -92,15 +92,15 @@ paths:
       summary: Delete existing persons
       tags:
       - persons
-  /person/get:
+  /person/get/login:
     get:
       consumes:
       - application/json
-      description: Find existing persons
+      description: Find existing persons by login
       parameters:
-      - description: ID of person entity.
+      - description: Login of person entity.
         in: query
-        name: id
+        name: login
         required: true
         type: string
       produces:
@@ -112,9 +112,32 @@ paths:
             items:
               $ref: '#/definitions/model.PersonResponse'
             type: array
-      summary: Find existing persons
+      summary: Find existing persons by login
       tags:
       - persons
+  /person/get/id:
+    get:
+      consumes:
+        - application/json
+      description: Find existing persons by id
+      parameters:
+        - description: ID of person entity.
+          in: query
+          name: id
+          required: true
+          type: string
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.PersonResponse'
+            type: array
+      summary: Find existing persons by id
+      tags:
+        - persons
   /person/update:
     put:
       consumes:
@@ -137,6 +160,29 @@ paths:
               $ref: '#/definitions/model.PersonResponse'
             type: array
       summary: Update existing persons
+      tags:
+      - persons
+  /persons:
+    get:
+      consumes:
+      - application/json
+      description: Load persons
+      parameters:
+      - description: Page of person table, when load by 50 rows.
+        in: query
+        name: page
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.PersonResponse'
+            type: array
+      summary: Load first 50 persons
       tags:
       - persons
 swagger: "2.0"

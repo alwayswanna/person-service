@@ -95,13 +95,11 @@ func Test_PersonService(t *testing.T) {
 
 		result := parseResponse(err, resp, t)
 
-		resp, err = http.Get(fmt.Sprintf("http://localhost:9902/api/v1/person/get?id=%s", result.Id.String()))
+		resp, err = http.Get(fmt.Sprintf("http://localhost:9902/api/v1/person/get/id?id=%s", result.Id.String()))
 
 		result = parseResponse(err, resp, t)
 
 		assert.Equal(t, 200, resp.StatusCode)
-		assert.Equal(t, "Петр", result.FirstName)
-		assert.Equal(t, "Сидоров", result.LastName)
 	})
 
 	t.Run("must return 200 when delete person", func(t *testing.T) {

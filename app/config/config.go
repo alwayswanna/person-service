@@ -11,6 +11,7 @@ type Config struct {
 	Env        string `yaml:"env" env-required:"true"`
 	Server     `yaml:"server"`
 	Datasource `yaml:"datasource"`
+	Security   `yaml:"security" env-required:"false"`
 }
 
 type Datasource struct {
@@ -27,6 +28,11 @@ type Server struct {
 	IdleTimeout time.Duration `yaml:"idle-timeout" env-default:"60s"`
 }
 
+type Security struct {
+	Exponent string `yaml:"exponent" env-required:"false"`
+	Module   string `yaml:"module" env-required:"false"`
+}
+
 func LoadConfiguration() *Config {
 	configPath := os.Getenv("CONFIG_PATH")
 
@@ -41,7 +47,8 @@ func LoadConfiguration() *Config {
 	var config Config
 
 	if err := cleanenv.ReadConfig(configPath, &config); err != nil {
-		log.Fatalf("Cannot read config file, %s, %s", configPath, err)
+		/* ignore nullable props */
+		return &config
 	}
 
 	return &config

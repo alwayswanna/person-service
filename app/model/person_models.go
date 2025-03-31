@@ -24,6 +24,7 @@ type PersonResponse struct {
 	LastName  string    `json:"lastName"`
 	Age       int       `json:"age"`
 	Timestamp time.Time `json:"timestamp"`
+	Login     string    `json:"login"`
 }
 
 // PersonDeleteResponse model info

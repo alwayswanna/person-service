@@ -22,5 +22,14 @@ func ToPersonResponse(entity entity.Person) model.PersonResponse {
 		LastName:  entity.LastName,
 		Age:       entity.Age,
 		Timestamp: *entity.Timestamp,
+		Login:     entity.Login,
 	}
+}
+
+func ToPersonsResponse(entities []entity.Person) []model.PersonResponse {
+	persons := make([]model.PersonResponse, len(entities))
+	for index, person := range entities {
+		persons[index] = ToPersonResponse(person)
+	}
+	return persons
 }
