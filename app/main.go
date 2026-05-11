@@ -1,15 +1,20 @@
 package main
 
 import (
+	"context"
+	"errors"
 	"fmt"
 	"github.com/go-chi/chi/v5"
 	"golang.org/x/exp/slog"
 	"net/http"
 	"os"
+	"os/signal"
 	"person-service/config"
 	"person-service/controllers"
 	"person-service/db/repository"
 	"person-service/utils"
+	"syscall"
+	"time"
 )
 
 const (
@@ -65,16 +70,35 @@ func init() {
 // @externalDocs.description  API for create/update/delete/edit persons.
 func main() {
 	logger.Info("Starting person-service ... ", slog.String("env", configuration.Env))
-
 	logger.Info("Starting http-s: ", slog.Int("port", configuration.Server.Port))
 
 	server := setupHttpServer(configuration, router)
 
-	if err := server.ListenAndServe(); err != nil {
-		logger.Error("Http-s start failed, ", utils.Err(err))
+	go func() {
+		if err := server.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
+			logger.Error("Http-s start failed", utils.Err(err))
+			os.Exit(1)
+		}
+	}()
+
+	quit := make(chan os.Signal, 1)
+	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
+	<-quit
+
+	logger.Info("Shutting down server...")
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	if err := server.Shutdown(ctx); err != nil {
+		logger.Error("Server forced to shutdown", utils.Err(err))
 	}
 
-	logger.Error("Http-s stopped.")
+	if err := storage.Close(); err != nil {
+		logger.Error("Failed to close database connection", utils.Err(err))
+	}
+
+	logger.Info("Server exited.")
 }
 
 func setupLogger(env string) *slog.Logger {

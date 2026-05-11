@@ -155,6 +155,11 @@ func (s *PersonRepositoryImpl) SavePerson(p entity.Person) (entity.Person, error
 	}
 }
 
+// Close closes the database connection.
+func (s *PersonRepositoryImpl) Close() error {
+	return s.db.Close()
+}
+
 // LoadPersons load first 50 persons from database.
 func (s *PersonRepositoryImpl) LoadPersons(page *string) ([]entity.Person, error) {
 	const op = "storage.postgres.LoadPersons"
